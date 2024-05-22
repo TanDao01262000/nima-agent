@@ -15,12 +15,11 @@ from embed_model import init_embed_model
 from langchain.memory import ConversationBufferMemory
 from redisvl.extensions.llmcache import SemanticCache
 from fastapi import FastAPI, HTTPException,  status
-import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
 import time
 from functools import wraps
-
+# import uvicorn
 
 
 app = FastAPI()
@@ -29,7 +28,7 @@ origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=origins,  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
