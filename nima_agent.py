@@ -53,7 +53,6 @@ embed = init_embed_model(model_id=model_id, device=device)
 
 
 #Vectorstore 😉😉
-
 api_key = config("PINECONE_API_KEY")
 pc = P(api_key=api_key)
 index_name = "nima"
