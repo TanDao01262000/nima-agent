@@ -19,10 +19,13 @@ from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
 import time
 from functools import wraps
-# import uvicorn
+import uvicorn
 import os
+
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "NimaAgent"
+os.environ["LANGCHAIN_ENDPOINT"] = config("LANGCHAIN_ENDPOINT") 
+os.environ["LANGCHAIN_API_KEY"] = config("LANGCHAIN_API_KEY")
 
 app = FastAPI()
 
@@ -134,7 +137,7 @@ agent_executor = AgentExecutor(agent=agent,
 # LLM Semantic Cache
 agentcache = SemanticCache(name="Nima-Agent-Semantic-Cache",
                            prefix="Nima-Agent-Semantic-Cache",
-                           redis_url="redis://default:kWu6QIZryfot6z4diQ609onRdOKl2FJM@redis-16329.c289.us-west-1-2.ec2.redns.redis-cloud.com:16329",
+                           redis_url=config('REDIS_URL'),
                            distance_threshold=0.0001
                            )
 agentcache.clear()
@@ -182,4 +185,4 @@ async def nima(query: str):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 nest_asyncio.apply()
-# uvicorn.run(app, port=8000)
+uvicorn.run(app, port=8000)
