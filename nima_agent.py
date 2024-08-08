@@ -184,5 +184,7 @@ async def nima(query: str):
         print(f"Error processing request: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-nest_asyncio.apply()
-uvicorn.run(app, port=8000)
+
+# if __name__ == '__main__':
+    # nest_asyncio.apply()
+    # uvicorn.run(app, port=8000)
