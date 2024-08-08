@@ -31,85 +31,73 @@ We are a passionate team of four software engineering students from San Jose Sta
 
 ## About the Project
 
+Do you ever spend a huge amout of time on the internet to just find a movie for you or your family and end up watching nothing? If so, **NIMA** is a solution for you!
 
+**NIMA** is your assistant which can answer any of your question about movie or relating topics such as what movie to watch, awards winners, or even asking about a movie's detail or stats from IMDB.
+
+With **NIMA**, you do more than just asking a question, but you also having a lon conversation with it as two people.
+
+**NIMA** can give you detailed answer, with high accuraccy by using the real time data, large size external movie database from IMDB.
 
 ### Built With
-
-
-
-  Some other libraries/technologies:
-
-
+- [Python](https://www.python.org/): Programming Language
+- [FastAPI](https://fastapi.tiangolo.com/): Platform for building RESTAPI  
+- [Langchain](https://www.langchain.com/): Framework used to build application using Large Language Model (LLM)
+- [Pinecone](https://www.pinecone.io/): Cloud-based vector database
+- [OpenAI GPT-3.5-turbo](https://openai.com/): Large Language Model (LLM) 
 
 
 ## Getting Started
 
 ### Prerequisites
 
-List any dependencies or prerequisites required to run the project. Be sure to include version numbers if applicable.
 
-- Python version [3.9](https://www.python.org/downloads/release/python-390/) or higher, but lower than [3.11](https://www.python.org/downloads/release/python-311/)
+- Python version [3.10](https://www.python.org/downloads/release/python-310/) or higher
 
 ### Installation
 
 1. Clone the repo
 
   ```sh
-   git clone 
+   git clone https://github.com/TanDao01262000/nima-agent.git
   ```
-  OR
-  ``` sh
-   git clone 
-  ```
+
 
 2. (Optional) Create a virtual environment
 
+Install and create virtual environment
   ```sh
     pip install virtualenv
     virtualenv venv
   ```
 
+Activate created environment
+
+For Mac & Linux: 
   ``` sh
-    source venv/bin/activate (for Mac & Linux)
+    source venv/bin/activate 
   ```
 
-    
-
+For Window:
   ``` sh
-  or
-    venv\Scripts\activate (for Window)
+    venv/Scripts/activate 
   ```
 
 3. Install dependencies
 
-  Navigate to the folder that contains requirements.txt:
-
-  ```sh
-    cd 
-  ```
   
   Install the dependencies:
-
    ```sh
    pip install -r requirements.txt
    ```
+   **Note**: Make sure that your current folder include the requirements.txt file
 
 4. Run the application:
+   ```sh
+   python nima_agent.py
+   ```
 
-### Usage
-
-    Feature:
-
-
-  Limitations:
-
-### Roadmap
-
- 1. 
-
-### Contributing
-
-  Team Members:
+   The API will run on port 8000
 
 
 ### License
@@ -123,5 +111,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
   - Do Tran: 
   - Tan Dao: tankhanhdao@gmail.com OR [tandao01262000.github.io](https://tandao01262000.github.io/)
 
-### Acknowledgements
 
