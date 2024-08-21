@@ -39,26 +39,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# LLM chat model - GPT-3.5-turbo 👌
-
-# init the llm chat model using gpt-3.5-turbo (since gpt-4 is too costly)
-llm = ChatOpenAI(model="gpt-3.5-turbo-1106",
+# LLM chat model
+llm = ChatOpenAI(model="gpt-4o-mini",
                  temperature=0,
                  openai_api_key=config("OPENAI_API_KEY"))
 
-# add cache to reduce the load of work and increase the performance
+# Add cache to reduce the load of work and increase the performance
 set_llm_cache(InMemoryCache())
 
-#Embedding Model 😤
-
+# Embedding Model 
 model_id = "sentence-transformers/all-MiniLM-L6-v2"
 device = 'cpu'
-# init embed model
 embed = init_embed_model(model_id=model_id, device=device)
 
 
-#Vectorstore 😉😉
-
+# Vectorstore 
 api_key = config("PINECONE_API_KEY")
 pc = P(api_key=api_key)
 index_name = "nima"
@@ -135,9 +130,7 @@ agent_executor = AgentExecutor(agent=agent,
 
 
 # LLM Semantic Cache
-agentcache = SemanticCache(name="Nima-Agent-Semantic-Cache",
-                           prefix="Nima-Agent-Semantic-Cache",
-                           redis_url=config('REDIS_URL'),
+agentcache = SemanticCache(redis_url=config('REDIS_URL'),
                            distance_threshold=0.0001
                            )
 agentcache.clear()
@@ -185,6 +178,6 @@ async def nima(query: str):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-if __name__ == '__main__':
-    nest_asyncio.apply()
-    uvicorn.run(app, port=8000)
+# if __name__ == '__main__':
+#     nest_asyncio.apply()
+#     uvicorn.run(app, port=8000)
