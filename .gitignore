@@ -7,4 +7,5 @@ __pycache__/
 *.env
 *.env*
 .env*
-*.yaml
+docker-compose.development.yaml
+docker-compose.production.yaml
