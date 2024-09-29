@@ -83,6 +83,7 @@ nima_retriever_tool = init_nima_retriever_tool(vectorstore=vectorstore_about_me,
 wiki_search_tool = init_wiki_searh_tool(name="wiki_search_tool",
                                         description="Useful for when you need to find information on wikipedia"
                                         )
+
 # google search tool
 google_search_tool = init_google_search_tool(name="google_search_tool",
                                              description="Useful for when you find any information relating to movies."
@@ -126,7 +127,7 @@ agent_executor = AgentExecutor(agent=agent,
                             verbose=True,
                             handle_parsing_errors=True,
                             max_iterations = 10,
-                            max_execution_time=600,
+                            max_execution_time=1000,
                         )
 
 
