@@ -186,6 +186,7 @@ async def nima(query: RequestBody = Body(...)):
                                                 "chat_history":memory})['output']
                 print(answer)
                 print(cb)
+                print(memory)
             agentcache.store(prompt=query, response=answer)
             return answer
 
