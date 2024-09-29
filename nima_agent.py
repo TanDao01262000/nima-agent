@@ -8,13 +8,14 @@ from langchain_core.prompts import PromptTemplate
 from langchain_community.callbacks import get_openai_callback
 from langchain_openai import ChatOpenAI
 from decouple import config
+from pydantic import BaseModel
 from template import react_agent_template
 from agent_tools import init_nima_retriever_tool, init_wiki_searh_tool, init_google_search_tool, init_rag_movie_recommend_tool
 from imdb_custom_tool import IMDBFetchTool
 from embed_model import init_embed_model
 from langchain.memory import ConversationBufferMemory
 from redisvl.extensions.llmcache import SemanticCache
-from fastapi import FastAPI, HTTPException,  status
+from fastapi import FastAPI, HTTPException,  status,Body
 from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
 import time
@@ -154,11 +155,27 @@ def rate_limiter(max_calls: int, time_frame: int):
     return decorator
 
 
-@app.get('/nima')
-@rate_limiter(max_calls=15, time_frame=60)
-async def nima(query: str):
-    try:
+class Input(BaseModel):
+    question: str
+    chat_history: list
 
+class Metadata(BaseModel):
+    conversation_id: str
+
+class Config(BaseModel):
+    metadata: Metadata
+    
+class RequestBody(BaseModel):
+    input: Input 
+    config: Config
+
+
+
+@app.post('/nima')
+@rate_limiter(max_calls=15, time_frame=60)
+async def nima(query: RequestBody = Body(...)):
+    try:
+        query = query.input.question
         cache = agentcache.check(prompt=query)
 
         if cache:
@@ -178,6 +195,6 @@ async def nima(query: str):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-# if __name__ == '__main__':
-#     nest_asyncio.apply()
-#     uvicorn.run(app, port=8000)
+if __name__ == '__main__':
+    nest_asyncio.apply()
+    uvicorn.run(app, port=8000)
