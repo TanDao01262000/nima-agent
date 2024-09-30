@@ -86,21 +86,21 @@ wiki_search_tool = init_wiki_searh_tool(name="wiki_search_tool",
 
 # google search tool
 google_search_tool = init_google_search_tool(name="google_search_tool",
-                                             description="Useful for when you find any information relating to movies."
+                                             description="Useful for when you recommend movies, or find any information relating to movies."
                                              )
 
 # Recommendation Tools
 movie_rag_recommendation_tool= init_rag_movie_recommend_tool(llm=llm,
                               vectorstore=vectorstore,
                               name="movie_rag_recommendation_tool",
-                              description="Useful for you recommend movies based on user's context from TMDB dataset"
+                              description="Useful for you recommend oldmovies" 
                                 )
 # IMDB movie info fetch
 imdb_info_fetch_tool = IMDBFetchTool()
 
 # list of tools
 tools = [google_search_tool, imdb_info_fetch_tool, wiki_search_tool,
-         nima_retriever_tool, movie_rag_recommendation_tool]
+         nima_retriever_tool]
 
 # Prompt used for Nima
 template = react_agent_template()
@@ -126,8 +126,9 @@ agent_executor = AgentExecutor(agent=agent,
                             memory=memory,
                             verbose=True,
                             handle_parsing_errors=True,
+                            early_stopping_method="force",
                             max_iterations = 10,
-                            max_execution_time=1000,
+                            max_execution_time=400,
                         )
 
 
