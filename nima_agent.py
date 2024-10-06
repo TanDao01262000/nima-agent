@@ -42,7 +42,7 @@ app.add_middleware(
 
 # LLM chat model
 llm = ChatOpenAI(model="gpt-4o-mini",
-                 temperature=0,
+                 temperature=0.3,
                  openai_api_key=config("OPENAI_API_KEY"))
 
 # Add cache to reduce the load of work and increase the performance
@@ -100,7 +100,7 @@ imdb_info_fetch_tool = IMDBFetchTool()
 
 # list of tools
 tools = [google_search_tool, imdb_info_fetch_tool, wiki_search_tool,
-         nima_retriever_tool]
+         nima_retriever_tool, ]
 
 # Prompt used for Nima
 template = react_agent_template()
@@ -189,7 +189,7 @@ async def nima(query: RequestBody = Body(...)):
                 print(answer)
                 print(cb)
                 print(memory)
-            agentcache.store(prompt=query, response=answer)
+            # agentcache.store(prompt=query, response=answer)
             return answer
 
     except Exception as e:
