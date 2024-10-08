@@ -8,13 +8,14 @@ from langchain_core.prompts import PromptTemplate
 from langchain_community.callbacks import get_openai_callback
 from langchain_openai import ChatOpenAI
 from decouple import config
+from pydantic import BaseModel
 from template import react_agent_template
 from agent_tools import init_nima_retriever_tool, init_wiki_searh_tool, init_google_search_tool, init_rag_movie_recommend_tool
 from imdb_custom_tool import IMDBFetchTool
 from embed_model import init_embed_model
 from langchain.memory import ConversationBufferMemory
 from redisvl.extensions.llmcache import SemanticCache
-from fastapi import FastAPI, HTTPException,  status
+from fastapi import FastAPI, HTTPException,  status,Body
 from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
 import time
@@ -41,7 +42,7 @@ app.add_middleware(
 
 # LLM chat model
 llm = ChatOpenAI(model="gpt-4o-mini",
-                 temperature=0,
+                 temperature=0.3,
                  openai_api_key=config("OPENAI_API_KEY"))
 
 # Add cache to reduce the load of work and increase the performance
@@ -82,17 +83,17 @@ nima_retriever_tool = init_nima_retriever_tool(vectorstore=vectorstore_about_me,
 wiki_search_tool = init_wiki_searh_tool(name="wiki_search_tool",
                                         description="Useful for when you need to find information on wikipedia"
                                         )
+
 # google search tool
 google_search_tool = init_google_search_tool(name="google_search_tool",
-                                             description="Useful for when you find any information relating to movies."
+                                             description="Useful for when you recommend movies, or find any information relating to movies."
                                              )
 
 # Recommendation Tools
 movie_rag_recommendation_tool= init_rag_movie_recommend_tool(llm=llm,
                               vectorstore=vectorstore,
                               name="movie_rag_recommendation_tool",
-                              description="Useful for you recommend movies based on user's context from TMDB dataset"
-                                )
+                              description="Useful for you recommend movies, get stats from a particular movie")
 # IMDB movie info fetch
 imdb_info_fetch_tool = IMDBFetchTool()
 
@@ -124,8 +125,9 @@ agent_executor = AgentExecutor(agent=agent,
                             memory=memory,
                             verbose=True,
                             handle_parsing_errors=True,
-                            max_iterations = 10,
-                            max_execution_time=600,
+                            early_stopping_method="force",
+                            max_iterations = 5,
+                            max_execution_time=400,
                         )
 
 
@@ -154,22 +156,55 @@ def rate_limiter(max_calls: int, time_frame: int):
     return decorator
 
 
-@app.get('/nima')
-@rate_limiter(max_calls=15, time_frame=60)
-async def nima(query: str):
-    try:
+class Input(BaseModel):
+    question: str
+    chat_history: list
 
+class Metadata(BaseModel):
+    conversation_id: str
+
+class Config(BaseModel):
+    metadata: Metadata
+    
+class RequestBody(BaseModel):
+    input: Input 
+    config: Config
+
+def handle_bad_response(query: str, memory: list[str]) -> str:
+    ERROR_HANDLER_MESSAGE = 'I only sleep 2 hours last night. Could you please ask me again??'
+    count = 0
+    while count < 5:
+        answer = agent_executor.invoke({"input": query,
+                                                "chat_history":memory})['output']
+        if ("Agent stopped due to iteration limit or time limit." == answer) or ("Agent stopped due to iteration limit or time limit." in answer) or (not answer):
+            answer = agent_executor.invoke({"input": query,
+                                                "chat_history":memory})['output']
+        
+            print(f'Trial {count}: {answer}')
+            count += 1
+        else:
+            break
+    if count >= 5:
+        answer = ERROR_HANDLER_MESSAGE
+    return answer
+        
+
+@app.post('/nima')
+@rate_limiter(max_calls=15, time_frame=60)
+async def nima(query: RequestBody = Body(...)):
+    try:
+        query = query.input.question
         cache = agentcache.check(prompt=query)
 
         if cache:
             return cache[0]['response']
         else:
             with get_openai_callback() as cb:
-                answer = agent_executor.invoke({"input": query,
-                                                "chat_history":memory})['output']
+                answer = handle_bad_response(query=query, memory=memory)
                 print(answer)
                 print(cb)
-            agentcache.store(prompt=query, response=answer)
+            if answer != "I only sleep 2 hours last night. Could you please ask me again??":
+                agentcache.store(prompt=query, response=answer)
             return answer
 
     except Exception as e:
@@ -178,6 +213,6 @@ async def nima(query: str):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-# if __name__ == '__main__':
-#     nest_asyncio.apply()
-#     uvicorn.run(app, port=8000)
+if __name__ == '__main__':
+    nest_asyncio.apply()
+    uvicorn.run(app, port=8000)
