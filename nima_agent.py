@@ -93,14 +93,13 @@ google_search_tool = init_google_search_tool(name="google_search_tool",
 movie_rag_recommendation_tool= init_rag_movie_recommend_tool(llm=llm,
                               vectorstore=vectorstore,
                               name="movie_rag_recommendation_tool",
-                              description="Useful for you recommend oldmovies" 
-                                )
+                              description="Useful for you recommend movies, get stats from a particular movie")
 # IMDB movie info fetch
 imdb_info_fetch_tool = IMDBFetchTool()
 
 # list of tools
 tools = [google_search_tool, imdb_info_fetch_tool, wiki_search_tool,
-         nima_retriever_tool, ]
+         nima_retriever_tool, movie_rag_recommendation_tool]
 
 # Prompt used for Nima
 template = react_agent_template()
@@ -127,8 +126,8 @@ agent_executor = AgentExecutor(agent=agent,
                             verbose=True,
                             handle_parsing_errors=True,
                             early_stopping_method="force",
-                            max_iterations = 10,
-                            max_execution_time=400,
+                            max_iterations = 5,
+                            max_execution_time=200,
                         )
 
 
@@ -171,6 +170,27 @@ class RequestBody(BaseModel):
     input: Input 
     config: Config
 
+# TODO: Send request to API mutiple time to get response and handle bad response nicely 
+def handle_bad_response(query: str, memory: list[str]) -> str:
+    ERROR_HANDLER_MESSAGE = 'I only sleep 2 hours last night. Could you please ask me again??'
+    count = 0
+    while count < 5:
+        answer = agent_executor.invoke({"input": query,
+                                                "chat_history":memory})['output']
+        if ("Agent stopped due to iteration limit or time limit." == answer) or ("Agent stopped due to iteration limit or time limit." in answer) or (not answer):
+            answer = agent_executor.invoke({"input": query,
+                                                "chat_history":memory})['output']
+        
+            print(f'Trial {count}: {answer}')
+            count += 1
+        else:
+            break
+    if count >= 5:
+        answer = ERROR_HANDLER_MESSAGE
+    return answer
+        
+
+        
 
 
 @app.post('/nima')
@@ -184,11 +204,10 @@ async def nima(query: RequestBody = Body(...)):
             return cache[0]['response']
         else:
             with get_openai_callback() as cb:
-                answer = agent_executor.invoke({"input": query,
-                                                "chat_history":memory})['output']
+                answer = handle_bad_response(query=query, memory=memory)
                 print(answer)
                 print(cb)
-                print(memory)
+            #TODO:Check if the answer is a good one then save in cache,else not save 
             # agentcache.store(prompt=query, response=answer)
             return answer
 
