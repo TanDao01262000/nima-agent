@@ -25,10 +25,8 @@ We are a passionate team of four software engineering students from San Jose Sta
   - [Usage](#usage)
   - [Roadmap](#roadmap)
   - [Contributing](#contributing)
-  - [License](#license)
   - [Contact](#contact)
-  - [Acknowledgements](#acknowledgements)
-
+  - [License](#license)
 ## About the Project
 
 Do you ever spend a huge amout of time on the internet to just find a movie for you or your family and end up watching nothing? If so, **NIMA** is a solution for you!
