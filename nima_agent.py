@@ -127,7 +127,7 @@ agent_executor = AgentExecutor(agent=agent,
                             handle_parsing_errors=True,
                             early_stopping_method="force",
                             max_iterations = 5,
-                            max_execution_time=200,
+                            max_execution_time=400,
                         )
 
 
@@ -170,7 +170,6 @@ class RequestBody(BaseModel):
     input: Input 
     config: Config
 
-# TODO: Send request to API mutiple time to get response and handle bad response nicely 
 def handle_bad_response(query: str, memory: list[str]) -> str:
     ERROR_HANDLER_MESSAGE = 'I only sleep 2 hours last night. Could you please ask me again??'
     count = 0
@@ -190,9 +189,6 @@ def handle_bad_response(query: str, memory: list[str]) -> str:
     return answer
         
 
-        
-
-
 @app.post('/nima')
 @rate_limiter(max_calls=15, time_frame=60)
 async def nima(query: RequestBody = Body(...)):
@@ -207,8 +203,8 @@ async def nima(query: RequestBody = Body(...)):
                 answer = handle_bad_response(query=query, memory=memory)
                 print(answer)
                 print(cb)
-            #TODO:Check if the answer is a good one then save in cache,else not save 
-            # agentcache.store(prompt=query, response=answer)
+            if answer != "I only sleep 2 hours last night. Could you please ask me again??":
+                agentcache.store(prompt=query, response=answer)
             return answer
 
     except Exception as e:
