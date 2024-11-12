@@ -6,7 +6,6 @@ from langchain_pinecone import Pinecone
 from langchain.agents import AgentExecutor, create_react_agent
 from langchain_core.prompts import PromptTemplate
 from langchain_community.callbacks import get_openai_callback
-from langchain_openai import ChatOpenAI
 from decouple import config
 from pydantic import BaseModel
 from template import react_agent_template
@@ -15,7 +14,7 @@ from imdb_custom_tool import IMDBFetchTool
 from embed_model import init_embed_model
 from langchain.memory import ConversationBufferMemory
 from redisvl.extensions.llmcache import SemanticCache
-from fastapi import FastAPI, HTTPException,  status,Body
+from fastapi import FastAPI, HTTPException,  status,Body    
 from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
 import time
@@ -25,7 +24,6 @@ import os
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "NimaAgent"
-os.environ["LANGCHAIN_ENDPOINT"] = config("LANGCHAIN_ENDPOINT") 
 os.environ["LANGCHAIN_API_KEY"] = config("LANGCHAIN_API_KEY")
 
 app = FastAPI()
@@ -86,7 +84,7 @@ wiki_search_tool = init_wiki_searh_tool(name="wiki_search_tool",
 
 # google search tool
 google_search_tool = init_google_search_tool(name="google_search_tool",
-                                             description="Useful for when you recommend movies, or find any information relating to movies."
+                                             description="Useful for when you need to find information to recommend movies, or find any information relating to movies."
                                              )
 
 # Recommendation Tools
@@ -98,8 +96,8 @@ movie_rag_recommendation_tool= init_rag_movie_recommend_tool(llm=llm,
 imdb_info_fetch_tool = IMDBFetchTool()
 
 # list of tools
-tools = [google_search_tool, imdb_info_fetch_tool, wiki_search_tool,
-         nima_retriever_tool, movie_rag_recommendation_tool]
+tools = [movie_rag_recommendation_tool, google_search_tool, imdb_info_fetch_tool, wiki_search_tool,
+         nima_retriever_tool ]
 
 # Prompt used for Nima
 template = react_agent_template()
@@ -126,8 +124,8 @@ agent_executor = AgentExecutor(agent=agent,
                             verbose=True,
                             handle_parsing_errors=True,
                             early_stopping_method="force",
-                            max_iterations = 5,
-                            max_execution_time=400,
+                            max_iterations = 3,
+                            max_execution_time=200,
                         )
 
 
@@ -173,10 +171,10 @@ class RequestBody(BaseModel):
 def handle_bad_response(query: str, memory: list[str]) -> str:
     ERROR_HANDLER_MESSAGE = 'I only sleep 2 hours last night. Could you please ask me again??'
     count = 0
-    while count < 5:
+    while count < 3:
         answer = agent_executor.invoke({"input": query,
                                                 "chat_history":memory})['output']
-        if ("Agent stopped due to iteration limit or time limit." == answer) or ("Agent stopped due to iteration limit or time limit." in answer) or (not answer):
+        if ("Agent stopped due to iteration limit or time limit." == answer):
             answer = agent_executor.invoke({"input": query,
                                                 "chat_history":memory})['output']
         
