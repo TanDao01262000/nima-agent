@@ -131,7 +131,7 @@ agent_executor = AgentExecutor(agent=agent,
 
 # LLM Semantic Cache
 agentcache = SemanticCache(redis_url=config('REDIS_URL'),
-                           distance_threshold=0.0001
+                           distance_threshold=0.1
                            )
 agentcache.clear()
 agentcache.set_ttl(2*60*60)
@@ -174,15 +174,14 @@ def handle_bad_response(query: str, memory: list[str]) -> str:
     while count < 3:
         answer = agent_executor.invoke({"input": query,
                                                 "chat_history":memory})['output']
-        if ("Agent stopped due to iteration limit or time limit." == answer):
+        if "Agent stopped due to iteration limit or time limit" in answer:
             answer = agent_executor.invoke({"input": query,
                                                 "chat_history":memory})['output']
         
-            print(f'Trial {count}: {answer}')
             count += 1
         else:
             break
-    if count >= 5:
+    if count >= 3:
         answer = ERROR_HANDLER_MESSAGE
     return answer
         
@@ -199,8 +198,8 @@ async def nima(query: RequestBody = Body(...)):
         else:
             with get_openai_callback() as cb:
                 answer = handle_bad_response(query=query, memory=memory)
-                print(answer)
                 print(cb)
+                print(answer)
             if answer != "I only sleep 2 hours last night. Could you please ask me again??":
                 agentcache.store(prompt=query, response=answer)
             return answer
