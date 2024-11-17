@@ -25,7 +25,7 @@ def fetch_movie_info(movie_name: str) -> str:
           info_str = ""
           info_set = movie.get(key)
           if isinstance(info_set, list):
-            for i, info in enumerate(info_set[:5]):
+            for i, info in enumerate(info_set[:]):
               info_str += f"{str(info)}"
               if i != min(len(info_set)-1,4):
                 info_str += ", "
