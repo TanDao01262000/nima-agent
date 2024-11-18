@@ -61,6 +61,16 @@ vectorstore = Pinecone(
     index, embed, "text" 
 )
 
+# New Movie Dataset
+api_key_new = config("PINECONE_API_KEY_2")
+pc = P(api_key=api_key_new)
+index_name_new = "nima1"
+index = pc.Index(index_name_new)
+vectorstore_new = Pinecone(
+    index, embed, "text" 
+)
+
+
 # about-me client for Nima's information rag
 api_key_about_me = config("PINECONE_API_KEY_1")
 pc_about_me = P(api_key=api_key_about_me)
@@ -84,12 +94,12 @@ wiki_search_tool = init_wiki_searh_tool(name="wiki_search_tool",
 
 # google search tool
 google_search_tool = init_google_search_tool(name="google_search_tool",
-                                             description="Useful for when you need to find information to recommend movies, or find any information relating to movies."
+                                             description="Useful for when you need to recommend new movies, or find any information relating to movies."
                                              )
 
 # Recommendation Tools
 movie_rag_recommendation_tool= init_rag_movie_recommend_tool(llm=llm,
-                              vectorstore=vectorstore,
+                              vectorstore=vectorstore_new,
                               name="movie_rag_recommendation_tool",
                               description="Useful for you recommend movies, get stats from a particular movie")
 # IMDB movie info fetch
@@ -123,7 +133,7 @@ agent_executor = AgentExecutor(agent=agent,
                             memory=memory,
                             verbose=True,
                             handle_parsing_errors=True,
-                            early_stopping_method="force",
+                            early_stopping_method="generate",
                             max_iterations = 3,
                             max_execution_time=200,
                         )
