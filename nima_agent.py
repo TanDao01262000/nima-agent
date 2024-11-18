@@ -133,7 +133,7 @@ agent_executor = AgentExecutor(agent=agent,
                             memory=memory,
                             verbose=True,
                             handle_parsing_errors=True,
-                            early_stopping_method="generate",
+                            early_stopping_method="force",
                             max_iterations = 3,
                             max_execution_time=200,
                         )
