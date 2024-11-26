@@ -28,21 +28,21 @@ def react_agent_template() -> str:
 
     You should have use more one or more tools to complete this task.
     To use a tool, please use the following format:
-        ```
+
         Thought: Do I need to use a tool? Yes,
         Action: The action to take, should be one of [{tool_names}]
         Action Input: the input to the action
         Observation: The result of the action
 
-        ```
+
 
     If you have any other thoughts, please move to the final answe
 
     When you get enough information, no need to use any tools, using this format:
-        ```
+
         Thought: Now I have enough information, I should move to the final answer
         Final Answer: enrich the final answer to the original input question and ansewr like in a conversation
-        ```
+
 
     NOTES:
     --------
