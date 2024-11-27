@@ -135,7 +135,7 @@ agent_executor = AgentExecutor(agent=agent,
                             handle_parsing_errors=True,
                             early_stopping_method="force",
                             max_iterations = 3,
-                            max_execution_time=200,
+                            max_execution_time=100,
                         )
 
 
@@ -179,7 +179,7 @@ class RequestBody(BaseModel):
     config: Config
 
 def handle_bad_response(query: str, memory: list[str]) -> str:
-    ERROR_HANDLER_MESSAGE = 'I only sleep 2 hours last night. Could you please ask me again??'
+    ERROR_HANDLER_MESSAGE = " Please ask me again, I only slept 2 hours last night 🥹🥹🥹"
     count = 0
     while count < 3:
         answer = agent_executor.invoke({"input": query,
@@ -210,7 +210,7 @@ async def nima(query: RequestBody = Body(...)):
                 answer = handle_bad_response(query=query, memory=memory)
                 print(cb)
                 print(answer)
-            if answer != "I only sleep 2 hours last night. Could you please ask me again??":
+            if answer != " Please ask me again, I only slept 2 hours last night 🥹🥹🥹":
                 agentcache.store(prompt=query, response=answer)
             return answer
 
