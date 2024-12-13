@@ -25,20 +25,21 @@ We are a passionate team of four software engineering students from San Jose Sta
   - [License](#license)
 ## About the Project
 
-Do you ever spend a huge amount of time on the internet to just find a movie for you or your family and end up watching nothing? If so, **NIMA** is a solution for you!
+Do you ever spend a huge amount	 of time on the internet to just find a movie for you or your family and end up watching nothing? If so, **NIMA** is a solution for you!
 
-**NIMA** is your assistant which can answer any of your question about movie or relating topics such as what movie to watch, awards winners, or even asking about a movie's detail or stats from IMDB.
+**NIMA** is your assistant which can answer any of your questions about a movie or related topics such as what movie to watch, awards winners, or even asking about a movie's details or stats from IMDB.
 
-With **NIMA**, you do more than just asking a question, but you also having a lon conversation with it as two people.
+With **NIMA**, you do more than just asking a question, but also having a long conversation with it as two people.
 
-**NIMA** can give you detailed answer, with high accuraccy by using the real time data, large size external movie database from IMDB.
+**NIMA** can give you detailed answers, with high accuracy by using the real time data, large size external movie database from IMDB.
 
 ### Built With
 - [Python](https://www.python.org/): Programming Language
-- [FastAPI](https://fastapi.tiangolo.com/): Platform for building RESTAPI  
+- [FastAPI](https://fastapi.tiangolo.com/): Platform for building REST API  
 - [Langchain](https://www.langchain.com/): Framework used to build application using Large Language Model (LLM)
 - [Pinecone](https://www.pinecone.io/): Cloud-based vector database
 - [OpenAI GPT-4o-mini](https://openai.com/): Large Language Model (LLM) 
+
 
 
 ## Getting Started
