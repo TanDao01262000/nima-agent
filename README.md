@@ -25,7 +25,7 @@ We are a passionate team of four software engineering students from San Jose Sta
   - [License](#license)
 ## About the Project
 
-Do you ever spend a huge amout of time on the internet to just find a movie for you or your family and end up watching nothing? If so, **NIMA** is a solution for you!
+Do you ever spend a huge amount of time on the internet to just find a movie for you or your family and end up watching nothing? If so, **NIMA** is a solution for you!
 
 **NIMA** is your assistant which can answer any of your question about movie or relating topics such as what movie to watch, awards winners, or even asking about a movie's detail or stats from IMDB.
 
