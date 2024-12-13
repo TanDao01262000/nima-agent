@@ -48,22 +48,6 @@ With **NIMA**, you do more than just asking a question, but also having a long c
 
 - Python version [3.10](https://www.python.org/downloads/release/python-310/) or higher
 
-### API Keys
-
-Make sure to create a .env file in your project directory and include the following environment variables:
-
-- PINECONE_ENVIRONMENT = "gcp-starter"
-- PINECONE_API_KEY = "ca3a0a0a-657a-444e-9064-5743aba25a41"
-- PINECONE_API_KEY_1 = "e58475c9-55d6-4b5c-a243-b6fb11d368e9"
-- PINECONE_API_KEY_2 = "pcsk_48LYgw_RaWN4cJtswG6iFuDBpRXtX5m1Lf2zypVDiAY1dhS7pMMx1KHTnQGzkcRpQyuBqp"
-  
-- LANGCHAIN_ENDPOINT = "<YOUR_LANGCHAIN_ENDPOINT>"
-- LANGCHAIN_API_KEY = "<YOUR_LANGCHAIN_API_KEY>"
-- OPENAI_API_KEY = "<YOUR_OPENAI_API_KEY>"
-- HUGGINGFACE_READ_TOKEN = "<YOUR_HUGGINGFACE_READ_TOKEN>"
-- SERPER_API_KEY = "<YOUR_SERPER_API_KEY>"
-- REDIS_URL = "<YOUR_REDIS_URL>"
-
 
 ### Installation
 
@@ -94,7 +78,23 @@ For Window:
     venv/Scripts/activate 
   ```
 
-3. Install dependencies
+3. API Keys
+
+Make sure to create a .env file in your project directory and include the following environment variables:
+
+- PINECONE_ENVIRONMENT = "gcp-starter"
+- PINECONE_API_KEY = "ca3a0a0a-657a-444e-9064-5743aba25a41"
+- PINECONE_API_KEY_1 = "e58475c9-55d6-4b5c-a243-b6fb11d368e9"
+- PINECONE_API_KEY_2 = "pcsk_48LYgw_RaWN4cJtswG6iFuDBpRXtX5m1Lf2zypVDiAY1dhS7pMMx1KHTnQGzkcRpQyuBqp"
+  
+- LANGCHAIN_ENDPOINT = "<YOUR_LANGCHAIN_ENDPOINT>"
+- LANGCHAIN_API_KEY = "<YOUR_LANGCHAIN_API_KEY>"
+- OPENAI_API_KEY = "<YOUR_OPENAI_API_KEY>"
+- HUGGINGFACE_READ_TOKEN = "<YOUR_HUGGINGFACE_READ_TOKEN>"
+- SERPER_API_KEY = "<YOUR_SERPER_API_KEY>"
+- REDIS_URL = "<YOUR_REDIS_URL>"
+
+4. Install dependencies
 
   
   Install the dependencies:
@@ -103,7 +103,7 @@ For Window:
    ```
    **Note**: Make sure that your current folder include the requirements.txt file
 
-4. Run the application:
+5. Run the application:
    ```sh
    python nima_agent.py
    ```
