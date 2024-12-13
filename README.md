@@ -1,6 +1,4 @@
-# NIMA REST API 
-https://github.com/TanDao01262000/nima-agent
- 
+# NIMA REST API  
 ## NowIMovieAnytime (NIMA)
 
 NIMA is an agentic AI chatbot specializing in movies and related topics. It can not only answer any question within its domain but also engage in extended conversations and provide real-time news updates to users.
