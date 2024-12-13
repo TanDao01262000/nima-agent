@@ -22,9 +22,6 @@ We are a passionate team of four software engineering students from San Jose Sta
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
-  - [Usage](#usage)
-  - [Roadmap](#roadmap)
-  - [Contributing](#contributing)
   - [Contact](#contact)
   - [License](#license)
 ## About the Project
@@ -42,15 +39,31 @@ With **NIMA**, you do more than just asking a question, but you also having a lo
 - [FastAPI](https://fastapi.tiangolo.com/): Platform for building RESTAPI  
 - [Langchain](https://www.langchain.com/): Framework used to build application using Large Language Model (LLM)
 - [Pinecone](https://www.pinecone.io/): Cloud-based vector database
-- [OpenAI GPT-3.5-turbo](https://openai.com/): Large Language Model (LLM) 
+- [OpenAI GPT-4o-mini](https://openai.com/): Large Language Model (LLM) 
 
 
 ## Getting Started
 
 ### Prerequisites
 
-
 - Python version [3.10](https://www.python.org/downloads/release/python-310/) or higher
+
+### API Keys
+
+Make sure to create a .env file in your project directory and include the following environment variables:
+
+- PINECONE_ENVIRONMENT = "gcp-starter"
+- PINECONE_API_KEY = "ca3a0a0a-657a-444e-9064-5743aba25a41"
+- PINECONE_API_KEY_1 = "e58475c9-55d6-4b5c-a243-b6fb11d368e9"
+- PINECONE_API_KEY_2 = "pcsk_48LYgw_RaWN4cJtswG6iFuDBpRXtX5m1Lf2zypVDiAY1dhS7pMMx1KHTnQGzkcRpQyuBqp"
+  
+- LANGCHAIN_ENDPOINT = "<YOUR_LANGCHAIN_ENDPOINT>"
+- LANGCHAIN_API_KEY = "<YOUR_LANGCHAIN_API_KEY>"
+- OPENAI_API_KEY = "<YOUR_OPENAI_API_KEY>"
+- HUGGINGFACE_READ_TOKEN = "<YOUR_HUGGINGFACE_READ_TOKEN>"
+- SERPER_API_KEY = "<YOUR_SERPER_API_KEY>"
+- REDIS_URL = "<YOUR_REDIS_URL>"
+
 
 ### Installation
 
@@ -104,9 +117,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ### Contact
 
-  - Quyen Nguyen: 
-  - Michael Kao: 
-  - Do Tran: 
-  - Tan Dao: tankhanhdao@gmail.com OR [tandao01262000.github.io](https://tandao01262000.github.io/)
+  - Quyen Nguyen: quyennln1412@gmail.com
+  - Michael Kao: michael.kao@sjsu.edu
+  - Do Tran: dohoangnhu.tran@sjsu.edu
+  - Tan Dao: tankhanhdao@gmail.com
 
 
